@@ -31,7 +31,7 @@ class ChatLogActivity : AppCompatActivity() {
 
 //        val username = intent.getStringExtra(NewMessageActivity.USER_KEY)
         val user = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
-        supportActionBar?.title = user.username
+        supportActionBar?.title = user?.username
 
         listenForMessages()
 
@@ -75,6 +75,7 @@ class ChatLogActivity : AppCompatActivity() {
                         )
                     }
                 }
+                recyclerview_chat_log.scrollToPosition(adapter.itemCount -1)
             }
             override fun onCancelled(p0: DatabaseError) {
 

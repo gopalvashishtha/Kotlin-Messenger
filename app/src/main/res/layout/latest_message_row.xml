@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="120dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
     android:id="@+id/imageview_latest_message"
-    android:layout_width="64dp"
-    android:layout_height="64dp"
+    android:layout_width="72dp"
+    android:layout_height="72dp"
     android:layout_marginBottom="8dp"
     android:layout_marginLeft="24dp"
     android:layout_marginStart="24dp"
@@ -24,7 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:text="Username"
+        tools:text="Username"
+        android:textSize="16dp"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/message_textview_latest_message"

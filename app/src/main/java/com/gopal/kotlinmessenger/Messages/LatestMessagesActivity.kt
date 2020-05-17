@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -13,6 +14,8 @@ import com.gopal.kotlinmessenger.Models.ChatMessage
 import com.gopal.kotlinmessenger.Models.User
 import com.gopal.kotlinmessenger.R
 import com.gopal.kotlinmessenger.RegisterLogin.RegisterActivity
+import com.gopal.kotlinmessenger.Views.LatestMessageRow
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -33,7 +36,13 @@ class LatestMessagesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_latest_messages)
         recyclerview_latestmessage.adapter = adapter
         recyclerview_latestmessage.layoutManager = LinearLayoutManager(this@LatestMessagesActivity)
-
+        recyclerview_latestmessage.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+         adapter.setOnItemClickListener { item, view ->
+             val intent = Intent(this, ChatLogActivity::class.java)
+             val row = item as LatestMessageRow
+             intent.putExtra(NewMessageActivity.USER_KEY, row.chatPartnerUser)
+             startActivity(intent)
+         }
         listenForLatestMessages()
 
         fetchCurrentUser()
@@ -46,17 +55,6 @@ class LatestMessagesActivity : AppCompatActivity() {
         }
     }
 
-    class LatestMessageRow(val chatMessage: ChatMessage): Item<ViewHolder>(){
-
-        override fun bind(viewHolder: ViewHolder, position: Int) {
-            viewHolder.itemView.message_textview_latest_message.text = chatMessage.text
-
-        }
-
-        override fun getLayout(): Int {
-            return R.layout.latest_message_row
-        }
-    }
 
     var latestMessagesMap = HashMap<String, ChatMessage>()
     private fun refreshRecyclerViewMessages(){

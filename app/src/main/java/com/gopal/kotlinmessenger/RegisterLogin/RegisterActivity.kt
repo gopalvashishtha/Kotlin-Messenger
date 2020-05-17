@@ -65,7 +65,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToFirebaseStorage() {
-        if(selectedImageUri == null) return
+        if(selectedImageUri == null){
+            Toast.makeText(this, "Please select a profile photo", Toast.LENGTH_SHORT).show()
+            return}
         val filename = UUID.randomUUID().toString()
       val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
         ref.putFile(selectedImageUri!!)
