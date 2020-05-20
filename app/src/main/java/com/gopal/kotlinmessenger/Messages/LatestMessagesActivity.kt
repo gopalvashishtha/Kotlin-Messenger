@@ -13,14 +13,11 @@ import com.google.firebase.database.*
 import com.gopal.kotlinmessenger.Models.ChatMessage
 import com.gopal.kotlinmessenger.Models.User
 import com.gopal.kotlinmessenger.R
-import com.gopal.kotlinmessenger.RegisterLogin.RegisterActivity
+import com.gopal.kotlinmessenger.ui.RegisterActivity
 import com.gopal.kotlinmessenger.Views.LatestMessageRow
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_latest_messages.*
-import kotlinx.android.synthetic.main.latest_message_row.view.*
 import kotlin.collections.HashMap
 
 class LatestMessagesActivity : AppCompatActivity() {

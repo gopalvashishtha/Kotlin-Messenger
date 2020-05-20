@@ -1,4 +1,4 @@
-package com.gopal.kotlinmessenger.RegisterLogin
+package com.gopal.kotlinmessenger.ui
 
 import android.content.Intent
 import android.os.Bundle
