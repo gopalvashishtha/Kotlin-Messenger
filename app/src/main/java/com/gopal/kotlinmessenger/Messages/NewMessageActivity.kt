@@ -76,8 +76,24 @@ class NewMessageActivity : AppCompatActivity() {
  class UserItem(val user: User): Item<ViewHolder>() {
      override fun bind(viewHolder: ViewHolder, position: Int) {
          viewHolder.itemView.username_textview_new_message.text = user.username
-         Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.imageview_new_message)
 
+         if (!user.profileImageUrl!!.isEmpty()) {
+
+             Picasso
+                 .get()
+                 .load(user.profileImageUrl)
+                 .placeholder(R.drawable.default_image) // can also be a drawable
+                 .into(viewHolder.itemView.imageview_new_message);
+
+
+             //Picasso.get().load(R.drawable.default_image).into(viewHolder.itemView.imageview_new_message) //
+         }
+//         else {
+//
+//             Picasso.get().load(user.profileImageUrl)
+//                 .into(viewHolder.itemView.imageview_new_message)
+//
+//         }
      }
 
 

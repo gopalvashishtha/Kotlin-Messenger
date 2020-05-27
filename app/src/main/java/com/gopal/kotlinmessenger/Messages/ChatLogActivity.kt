@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.gopal.kotlinmessenger.Models.ChatMessage
 import com.gopal.kotlinmessenger.Models.User
 import com.gopal.kotlinmessenger.R
+import com.gopal.kotlinmessenger.utils.`Date-Time`.getFormattedTimeChatLog
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
@@ -54,27 +55,31 @@ class ChatLogActivity : AppCompatActivity() {
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val chatMessage = p0.getValue(ChatMessage::class.java)
 
-                if (chatMessage != null) {
-                    Log.d("chatLog Activity", chatMessage.text)
+                    if (chatMessage != null) {
+                        Log.d("chatLog Activity", chatMessage.text)
 
-                    if (chatMessage.fromId == FirebaseAuth.getInstance().uid){
-                        val currentuser= LatestMessagesActivity.currentuser ?: return
-                    adapter.add(
-                        ChatFromItem(
-                            chatMessage.text,
-                            currentuser
-                        )
-                    )}
-                    else{
-                        val toUser = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
-                        adapter.add(
-                            ChatToItem(
-                                chatMessage.text,
-                                toUser
+                        if (chatMessage.fromId == FirebaseAuth.getInstance().uid) {
+                            val currentuser = LatestMessagesActivity.currentuser ?: return
+                            adapter.add(
+                                ChatFromItem(
+                                    chatMessage.text,
+                                    currentuser,
+                                    chatMessage.timestamp
+                                )
                             )
-                        )
+                        } else {
+                            val toUser =
+                                intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
+                            adapter.add(
+                                ChatToItem(
+                                    chatMessage.text,
+                                    toUser,
+                                    chatMessage.timestamp
+                                )
+                            )
+                        }
                     }
-                }
+
                 recyclerview_chat_log.scrollToPosition(adapter.itemCount -1)
             }
             override fun onCancelled(p0: DatabaseError) {
@@ -132,15 +137,31 @@ class ChatLogActivity : AppCompatActivity() {
     }
 }
 
-class ChatFromItem(val text : String, val user: User) : Item<ViewHolder>(){
+class ChatFromItem(val text : String, val user: User, val timestamp: Long) : Item<ViewHolder>(){
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textview_from_row.text = text
+        viewHolder.itemView.from_msg_time.text = getFormattedTimeChatLog(timestamp)
         val uri = user.profileImageUrl
         val targetimageView = viewHolder.itemView.imageview_chat_from_row
-        Picasso.get().load(uri).into(targetimageView)
+
+        if (!user.profileImageUrl!!.isEmpty()) {
+
+            Picasso
+                .get()
+                .load(user.profileImageUrl)
+                .placeholder(R.drawable.default_image) // can also be a drawable
+                .into(targetimageView);
 
 
+            //Picasso.get().load(R.drawable.default_image).into(viewHolder.itemView.imageview_new_message) //
+        }
+//        else{
+//
+//            Picasso.get().load(uri).into(targetimageView)
+//
+//
+//        }
     }
 
     override fun getLayout(): Int {
@@ -151,14 +172,30 @@ class ChatFromItem(val text : String, val user: User) : Item<ViewHolder>(){
 
 }
 
-class ChatToItem(val text: String, val user: User) : Item<ViewHolder>(){
+class ChatToItem(val text: String, val user: User, val timestamp: Long) : Item<ViewHolder>(){
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textview_to_row.text = text
+        viewHolder.itemView.to_msg_time.text = getFormattedTimeChatLog(timestamp)
+
         val uri = user.profileImageUrl
         val targetimageView = viewHolder.itemView.imageview_chat_to_row
-        Picasso.get().load(uri).into(targetimageView)
+        if (!user.profileImageUrl!!.isEmpty()) {
 
+            Picasso
+                .get()
+                .load(user.profileImageUrl)
+                .placeholder(R.drawable.default_image) // can also be a drawable
+                .into(targetimageView);
+
+
+            //Picasso.get().load(R.drawable.default_image).into(viewHolder.itemView.imageview_new_message) //
+        }
+//        else {
+//
+//            Picasso.get().load(uri).into(targetimageView)
+//
+//        }
     }
 
     override fun getLayout(): Int {
