@@ -14,12 +14,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.gopal.kotlinmessenger.Messages.LatestMessagesActivity
 import com.gopal.kotlinmessenger.Models.User
 import com.gopal.kotlinmessenger.R
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
-   private var selectedImageUri:Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +31,6 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-//            if (selectedImageUri == null) {
-//                Toast.makeText(this, "Please select a photo", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
             Log.d("MainActivity", "Email is: " + email)
             Log.d("MainActivity", "Password: $password")
 
@@ -72,13 +65,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToFirebaseStorage() {
-
         if(selectedImageUri == null){
-            //Toast.makeText(this, "Please select a profile photo", Toast.LENGTH_SHORT).show()
-            //Picasso.get().load(R.drawable.default_image).into(selectphoto_imageview_register)
-            saveUserToFirebaseDatabase(null)
-            return
-        }
+            Toast.makeText(this, "Please select a profile photo", Toast.LENGTH_SHORT).show()
+            return}
         val filename = UUID.randomUUID().toString()
       val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
         ref.putFile(selectedImageUri!!)
@@ -97,23 +86,14 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun saveUserToFirebaseDatabase(profileImageUrl: String?) {
+    private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
         val uid = FirebaseAuth.getInstance().uid ?: ""
        val ref =  FirebaseDatabase.getInstance().getReference("/users/$uid")
-//       val user = User(
-//           uid,
-//           username_edittext_register.text.toString(),
-//           profileImageUrl
-//       )
-
-
-        val user = if (profileImageUrl == null) {
-            User(uid, username_edittext_register.text.toString(), null)
-        } else {
-            User(uid, username_edittext_register.text.toString(), profileImageUrl)
-        }
-
-
+       val user = User(
+           uid,
+           username_edittext_register.text.toString(),
+           profileImageUrl
+       )
         ref.setValue(user)
             .addOnSuccessListener {
                 Log.d("Register Activity","Finally we saved the user to Firebase Database")
@@ -127,7 +107,7 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-
+    var selectedImageUri:Uri? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

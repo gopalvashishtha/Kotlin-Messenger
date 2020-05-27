@@ -7,15 +7,15 @@ import android.os.Bundle
 import androidx.core.view.isInvisible
 import com.gopal.kotlinmessenger.Messages.LatestMessagesActivity
 import com.gopal.kotlinmessenger.R
-import kotlinx.android.synthetic.main.activity_animation.*
+import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 
-class AnimationActivity : AppCompatActivity() {
+class SplashScreenActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_animation)
+        setContentView(R.layout.activity_splash_screen)
 
 
 
@@ -30,7 +30,7 @@ class AnimationActivity : AppCompatActivity() {
             override fun onAnimationEnd(animation: Animator?) {
 
             lottie.isInvisible = true
-                val i = Intent(this@AnimationActivity, LatestMessagesActivity::class.java)
+                val i = Intent(this@SplashScreenActivity, LatestMessagesActivity::class.java)
                 startActivity(i)
 
 

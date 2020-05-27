@@ -8,7 +8,6 @@ import com.google.firebase.database.ValueEventListener
 import com.gopal.kotlinmessenger.Models.ChatMessage
 import com.gopal.kotlinmessenger.Models.User
 import com.gopal.kotlinmessenger.R
-import com.gopal.kotlinmessenger.utils.`Date-Time`
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -37,23 +36,7 @@ class LatestMessageRow(val chatMessage: ChatMessage): Item<ViewHolder>(){
                 viewHolder.itemView.username_textview_latest_message.text = chatPartnerUser?.username
 
                 val targetImageView = viewHolder.itemView.imageview_latest_message
-
-                viewHolder.itemView.latest_msg_time.text = `Date-Time`.getFormattedTime(chatMessage.timestamp)
-
-                if (!chatPartnerUser?.profileImageUrl?.isEmpty()!!) {
-
-                    Picasso
-                        .get()
-                        .load(chatPartnerUser?.profileImageUrl)
-                        .placeholder(R.drawable.default_image) // can also be a drawable
-                        .into(targetImageView);
-
-
-                    //Picasso.get().load(R.drawable.default_image).into(viewHolder.itemView.imageview_new_message) //
-                }
-
-
-                //Picasso.get().load(chatPartnerUser?.profileImageUrl).into(targetImageView)
+                Picasso.get().load(chatPartnerUser?.profileImageUrl).into(targetImageView)
             }
 
         })
