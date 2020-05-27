@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.gopal.kotlinmessenger.Models.ChatMessage
 import com.gopal.kotlinmessenger.Models.User
+import com.gopal.kotlinmessenger.utils.`date-time`
 import com.gopal.kotlinmessenger.R
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.Item
@@ -36,6 +37,7 @@ class LatestMessageRow(val chatMessage: ChatMessage): Item<ViewHolder>(){
                 viewHolder.itemView.username_textview_latest_message.text = chatPartnerUser?.username
 
                 val targetImageView = viewHolder.itemView.imageview_latest_message
+                viewHolder.itemView.latest_msg_time.text = `date-time`.getFormattedTime(chatMessage.timestamp)
                 Picasso.get().load(chatPartnerUser?.profileImageUrl).into(targetImageView)
             }
 

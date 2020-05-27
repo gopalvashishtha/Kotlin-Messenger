@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.gopal.kotlinmessenger.Models.ChatMessage
 import com.gopal.kotlinmessenger.Models.User
 import com.gopal.kotlinmessenger.R
+import com.gopal.kotlinmessenger.utils.`date-time`.getFormattedTimeChatLog
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
@@ -62,7 +63,8 @@ class ChatLogActivity : AppCompatActivity() {
                     adapter.add(
                         ChatFromItem(
                             chatMessage.text,
-                            currentuser
+                            currentuser,
+                            chatMessage.timestamp
                         )
                     )}
                     else{
@@ -70,7 +72,8 @@ class ChatLogActivity : AppCompatActivity() {
                         adapter.add(
                             ChatToItem(
                                 chatMessage.text,
-                                toUser
+                                toUser,
+                                chatMessage.timestamp
                             )
                         )
                     }
@@ -132,12 +135,14 @@ class ChatLogActivity : AppCompatActivity() {
     }
 }
 
-class ChatFromItem(val text : String, val user: User) : Item<ViewHolder>(){
+class ChatFromItem(val text : String, val user: User, val timestamp: Long) : Item<ViewHolder>(){
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textview_from_row.text = text
+        viewHolder.itemView.from_msg_time.text = getFormattedTimeChatLog(timestamp)
         val uri = user.profileImageUrl
         val targetimageView = viewHolder.itemView.imageview_chat_from_row
+
         Picasso.get().load(uri).into(targetimageView)
 
 
@@ -151,10 +156,11 @@ class ChatFromItem(val text : String, val user: User) : Item<ViewHolder>(){
 
 }
 
-class ChatToItem(val text: String, val user: User) : Item<ViewHolder>(){
+class ChatToItem(val text: String, val user: User, val timestamp: Long) : Item<ViewHolder>(){
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textview_to_row.text = text
+        viewHolder.itemView.to_msg_time.text = getFormattedTimeChatLog(timestamp)
         val uri = user.profileImageUrl
         val targetimageView = viewHolder.itemView.imageview_chat_to_row
         Picasso.get().load(uri).into(targetimageView)
